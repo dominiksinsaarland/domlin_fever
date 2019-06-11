@@ -44,6 +44,7 @@ pip install requirments.txt
 wget https://s3-eu-west-1.amazonaws.com/fever.public/wiki-pages.zip
 unzip wiki-pages.zip -d fever_data/wiki_pages
 mkdir fever_data
+mkdir fever_models
 wget -O fever_data/train.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/train.jsonl
 wget -O fever_data/dev.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/shared_task_dev.jsonl
 wget -O fever_data/test.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/shared_task_test.jsonl 
@@ -72,11 +73,18 @@ We implemented a hierarchical sentence retrieval approach where we try to find e
 to train the model:
 
 ```bash 
+
+
 # generate the training set
 python src/generate_training_data/generate_sentence_retrieval_part_1_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_training_set.tsv --path_wiki_titles fever_data/wiki_pages
-python generate_sentence_retrieval_part_1_training_set.py
-# train the model
-#python run_fever.py --task=sentence_retrieval_part_1...
+
+# generate dev set
+
+
+# train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
+python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true --path_to_train_file=fever_data/sentence_retrieval_1_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128 --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=4 --file_test_results=train_sentences_hinge_loss.tsv --prediction_file=train_sentences_for_hingeloss.tsv
+
+
 ```
 
 
