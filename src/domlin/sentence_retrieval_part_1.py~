@@ -6,7 +6,7 @@ import unicodedata
 import os
 from collections import defaultdict
 import numpy as np
-
+import argparse
 import sys
 
 def load_wiki_pages(path, docs,return_all_titles=False):

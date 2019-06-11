@@ -65,5 +65,5 @@ if __name__ == '__main__':
 	parser.add_argument('--outfile')
 	parser.add_argument('--path_wiki_titles')
 	args = parser.parse_args()
-	generate_sentence_retrieval_training_set(args.infile, args.outfile, args.path_wiki_titles)
+	sentence_retrieval(args.infile, args.outfile, args.path_wiki_titles)
 
