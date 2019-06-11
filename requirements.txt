@@ -1,0 +1,6 @@
+wikipedia
+nltk
+tqdm
+allennlp
+tensorflow-gpu==1.11.0
+fever-api
