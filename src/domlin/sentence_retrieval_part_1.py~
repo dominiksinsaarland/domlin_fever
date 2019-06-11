@@ -42,7 +42,7 @@ def sentence_retrieval(path_to_infile, path_to_outfile, path_to_wiki):
 	docs = load_wiki_pages(path_to_wiki, docs)
 
 	outfile = open(path_to_outfile, "w")
-	with open(path_to_file) as infile:
+	with open(path_to_infile) as infile:
 		for line in infile:
 			data = json.loads(line)
 			claim = data["claim"]
