@@ -42,7 +42,7 @@ pip install requirments.txt
 * get relevant fever data (that is train, dev and test set)
 ```bash 
 wget https://s3-eu-west-1.amazonaws.com/fever.public/wiki-pages.zip
-unzip wiki-pages.zip -d wiki_pages
+unzip wiki-pages.zip -d fever_data/wiki_pages
 mkdir fever_data
 wget -O fever_data/train.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/train.jsonl
 wget -O fever_data/dev.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/shared_task_dev.jsonl
