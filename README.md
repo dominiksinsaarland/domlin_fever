@@ -78,7 +78,8 @@ to train the model:
 # generate the training set
 python src/generate_training_data/generate_sentence_retrieval_part_1_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_training_set.tsv --path_wiki_titles fever_data/wiki_pages
 
-# generate dev set
+# generate dev set sentences
+python src/domlin/sentence_retrieval_part_1.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_dev_set.tsv --path_wiki_titles fever_data/wiki_pages
 
 
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
