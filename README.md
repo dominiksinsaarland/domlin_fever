@@ -73,9 +73,10 @@ to train the model:
 
 ```bash 
 # generate the training set
+python src/generate_training_data/generate_sentence_retrieval_part_1_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_training_set.tsv --path_wiki_titles fever_data/wiki_pages
 python generate_sentence_retrieval_part_1_training_set.py
 # train the model
-python run_fever.py --task=sentence_retrieval_part_1...
+#python run_fever.py --task=sentence_retrieval_part_1...
 ```
 
 
