@@ -83,7 +83,12 @@ python src/domlin/sentence_retrieval_part_1.py --infile fever_data/dev.documents
 
 
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
-python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true --path_to_train_file=fever_data/sentence_retrieval_1_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128 --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=4 --file_test_results=train_sentences_hinge_loss.tsv --prediction_file=train_sentences_for_hingeloss.tsv
+python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true \
+--path_to_train_file=fever_data/sentence_retrieval_1_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt\
+ --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128\
+ --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 \
+--init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=4 \
+--file_test_results=fever_data/sentence_retrieval_1_dev_set.tsv --prediction_file=dev_set_sentences_predicted_part_1.tsv
 
 
 ```
