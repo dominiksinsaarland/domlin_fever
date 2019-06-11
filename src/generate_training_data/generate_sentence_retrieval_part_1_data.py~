@@ -62,7 +62,7 @@ def load_wiki_docs(path_to_infile, path_wiki_titles, return_all_titles=False):
 		docs = load_wiki_pages(path_wiki_titles, docs)
 		return docs
 
-def sample_negative_example(title, docs, block_set):
+def sample_negative_example(title, docs):
 	examples = []
 
 	for i, sent in enumerate(docs[title]):
@@ -116,7 +116,7 @@ def generate_sentence_retrieval_training_set(path_to_infile, outfile, path_wiki_
 						positive_examples.add((claim, Wikipedia_URL, sentence_ID, 0))
 
 						# sample negative evidence:
-						neg = sample_negative_example(Wikipedia_URL, docs, block_set)
+						neg = sample_negative_example(Wikipedia_URL, docs)
 						if neg != -1:
 							#negative_examples.add((claim, neg[0], neg[1], 2))
 							for n in neg:
@@ -133,7 +133,7 @@ def generate_sentence_retrieval_training_set(path_to_infile, outfile, path_wiki_
 			for page in pred_pages:
 				if page in docs:
 					if page not in good_docs:
-						neg = sample_negative_example(page, docs, block_set)
+						neg = sample_negative_example(page, docs)
 
 						if neg != -1:
 							#negative_examples.add((claim, neg[0], neg[1], 2))
