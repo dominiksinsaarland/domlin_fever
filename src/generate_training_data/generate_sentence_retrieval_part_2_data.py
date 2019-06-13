@@ -6,15 +6,6 @@ from collections import defaultdict
 import numpy as np
 import argparse
 
-if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument('--infile')
-	parser.add_argument('--outfile')
-	parser.add_argument('--path_wiki_titles')
-	args = parser.parse_args()
-	generate_sentence_retrieval_training_set(args.infile, args.outfile, args.path_wiki_titles)
-
-
 
 
 def load_wiki_pages(path, docs,return_all_titles=False):

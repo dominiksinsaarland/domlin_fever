@@ -111,7 +111,7 @@ def load_evidence_chain_docs(path_to_json, path_to_wiki, docs_first_pass):
 
 
 
-def generate_evidence_chains_train_new(path_to_infile, path_to_outfile, path_to_wiki):
+def generate_evidence_chains_train(path_to_infile, path_to_outfile, path_to_wiki):
 
 
 	outfile = open(path_to_outfile, "w")
@@ -235,4 +235,12 @@ def generate_evidence_chains_train_new(path_to_infile, path_to_outfile, path_to_
 
 	outfile.close()
 
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--infile')
+	parser.add_argument('--outfile')
+	parser.add_argument('--path_wiki_titles')
+	args = parser.parse_args()
+	generate_evidence_chains_train(args.infile, args.outfile, args.path_wiki_titles)
 
