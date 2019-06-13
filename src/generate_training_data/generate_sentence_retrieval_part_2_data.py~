@@ -17,6 +17,61 @@ if __name__ == '__main__':
 
 
 
+def load_wiki_pages(path, docs,return_all_titles=False):
+	files = os.listdir(path)
+	wiki_docs = {}
+	if return_all_titles:
+		all_wiki_titles = set()
+	for f in files:
+		with open(os.path.join(path, f)) as infile:
+			for line in infile:
+				data = json.loads(line)
+				title = data["id"]
+				title = unicodedata.normalize("NFC", title)
+				if title in docs:
+					wiki_docs[title] = data["lines"].split("\n")
+				if return_all_titles:
+					all_wiki_titles.add(title)
+	if return_all_titles:
+		return wiki_docs, all_wiki_titles
+	else:
+		return wiki_docs
+
+
+
+def load_wiki_docs(path_to_infile, path_wiki_titles, return_all_titles=False):
+	"""
+	returns a dictionairy with keys being wiki_titles and values being the document's content
+	makes one pass through the infile first to only store the wiki titles which are actually required by the infile
+	"""
+
+	# one pass to check which documents are actually required
+	docs = set()
+	with open(path_to_infile) as infile:
+		for line in infile:
+			data = json.loads(line)
+			if data["verifiable"] ==  "NOT VERIFIABLE":
+				continue
+
+			claim = data["claim"]
+			label = data["label"]
+			evidence = data["evidence"]
+			pred_pages = data["predicted_pages"]
+			for evid in evidence:
+				for item in evid:
+					Annotation_ID, Evidence_ID, Wikipedia_URL, sentence_ID = item
+					Wikipedia_URL = unicodedata.normalize("NFC", Wikipedia_URL)
+					docs.add(Wikipedia_URL)
+			docs.update(pred_pages)
+
+	# fetch the documents
+	if return_all_titles:
+		docs, all_wiki_titles = load_wiki_pages(path_wiki_titles, docs, return_all_titles=True)
+		return docs, all_wiki_titles
+	else:
+		docs = load_wiki_pages(path_wiki_titles, docs)
+		return docs
+
 def process_title_rev(title):
 	# reverse engineer title to find the relevant document
 	title = re.sub("\(", "-LRB-", title)
