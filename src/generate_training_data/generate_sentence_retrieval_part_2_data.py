@@ -30,6 +30,30 @@ def load_wiki_pages(path, docs,return_all_titles=False):
 
 
 
+def sample_negative_example(title, docs, block_set):
+	examples = []
+
+	for i, sent in enumerate(docs[title]):
+		sent = sent.split("\t")
+		try:
+			sent_id = sent[0]
+			sent = sent[1]
+			if int(sent_id) != i:
+				print ("doc title", title)
+				print ("i", i,"sent_id", sent_id)
+				print ("sent",sent)
+				print ("all sents","\n".join(docs[title]))
+				sys.exit(0)
+			if (title, i) not in block_set and len(sent.split()) > 5:
+				examples.append((title, i))
+		except Exception as e:
+			print (str(e))
+	if examples:
+		return examples
+	return -1
+
+
+
 def load_wiki_docs(path_to_infile, path_wiki_titles, return_all_titles=False):
 	"""
 	returns a dictionairy with keys being wiki_titles and values being the document's content
