@@ -1,0 +1,109 @@
+
+
+
+import json
+import re
+import unicodedata
+import os
+from collections import defaultdict
+import numpy as np
+
+import sys
+import argparse
+
+
+def process_title_rev(title):
+	#print (title)
+	title = re.sub("\(", "-LRB-", title)
+	title = re.sub("\)", "-RRB-", title)
+	title = re.sub("\:", "-COLON-", title)
+	title = re.sub(" ", "_", title)
+	return title
+
+
+def load_wiki_pages(path, docs,return_all_titles=False):
+	files = os.listdir(path)
+	wiki_docs = {}
+	if return_all_titles:
+		all_wiki_titles = set()
+	for f in files:
+		#print (f)
+		with open(os.path.join(path, f)) as infile:
+			for line in infile:
+				data = json.loads(line)
+				title = data["id"]
+				title = unicodedata.normalize("NFC", title)
+				if title in docs:
+					wiki_docs[title] = data["lines"].split("\n")
+				if return_all_titles:
+					all_wiki_titles.add(title)
+	if return_all_titles:
+		print (len(all_wiki_titles))
+		return wiki_docs, all_wiki_titles
+	else:
+		return wiki_docs
+
+def sentence_retrieval_part_2(path_to_pred_evid, path_to_file, path_to_wiki, outfile_name, path_to_orig_jsonl):
+	docs = set()
+	path_to_json= path_to_orig_jsonl
+	with open(path_to_json) as infile:
+		for line in infile:
+			data = json.loads(line)
+			claim = data["claim"]
+			pred_pages = data["predicted_pages"]
+			docs.update(pred_pages)
+
+	with open(path_to_pred_evid) as preds:
+		with open(path_to_file) as infile:
+			for pred, line in zip(preds, infile):
+				pred = float(pred.strip())
+				line = line.strip().split("\t")
+				if pred >= 1:
+					claim, doc, sent, sent_id, claim_id, _, _, rest = line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7:]
+					docs.update([process_title_rev(page) for page in rest] + [doc])
+
+
+
+	docs = load_wiki_pages(path_to_wiki, docs)
+
+	outfile = open(outfile_name, "w")
+	with open(path_to_pred_evid) as preds:
+		with open(path_to_file) as infile:
+			for pred, line in zip(preds, infile):
+				pred = float(pred.strip())
+				line = line.strip().split("\t")
+				if pred >= 1:
+					claim, doc, orig_sent, sent_id, claim_id, rest = line[0], line[1], line[2], line[3], line[4], line[7:]
+					jump_pages = set([process_title_rev(page) for page in rest])
+					jump_pages.add(doc)
+					for sent in docs[doc]:
+						if len(sent.split("\t")) > 2:
+							pages = sent.split("\t")[2:]
+							jump_pages.update([process_title_rev(page) for page in pages])				
+
+					orig_doc, orig_id = doc, sent_id
+					for page in jump_pages:
+						if page not in docs:
+							continue
+						for i, sent in enumerate(docs[page]):
+							sent = sent.split("\t")
+							if len(sent) > 1:
+								sent_id, raw_sent = sent[0], sent[1]
+								sent = "\t".join(sent)
+								if len(raw_sent.split()) > 5:
+									altered_evid = doc + " : " + orig_sent + " " + page + " : " + raw_sent
+									outfile.write(claim + "\t" + altered_evid + "\t" + page + "\t" + str(sent_id) + "\t" + claim_id + "\t" + orig_doc + "\t" + orig_id + "\t" +  sent + "\n")									
+
+	outfile.close()
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--infile')
+	parser.add_argument('--outfile')
+	parser.add_argument('--path_wiki_titles')
+	parser.add_argument('--predicted_evidence')
+	parser.add_argument('--file_with_sentences_to_be_predicted')
+	args = parser.parse_args()
+	# def sentence_retrieval_part_2(path_to_pred_evid, path_to_file, path_to_wiki, outfile_name, path_to_orig_jsonl):
+	sentence_retrieval_part_2(args.predicted_evidence, args.file_with_sentences_to_be_predicted, args.path_wiki_titles, args.outfile, args.infile)
+
