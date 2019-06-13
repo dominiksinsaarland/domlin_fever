@@ -268,7 +268,7 @@ class EvidChains(DataProcessor):
 
 
     if FLAGS.prediction_file is not None:
-      lines = self._read_tsv(os.path.join(data_dir, FLAGS.prediction_file))
+      lines = self._read_tsv(FLAGS.prediction_file)
     else:
       lines = self._read_tsv(os.path.join(data_dir, "evid_chains_dev_athene.tsv"))
 
@@ -380,7 +380,7 @@ class DocumentRetrieval(DataProcessor):
 
 
     if FLAGS.prediction_file is not None:
-      lines = self._read_tsv(os.path.join(data_dir, FLAGS.prediction_file))
+      lines = self._read_tsv(FLAGS.prediction_file)
     else:
       lines = self._read_tsv(os.path.join(data_dir, "all_sentences_dev_set.tsv"))
     #lines = self._read_tsv(os.path.join(data_dir, "all_NEI_sents_train.tsv")) 
