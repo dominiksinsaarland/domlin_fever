@@ -116,7 +116,8 @@ If we retrieve a positive sentence evid_1 in a wiki doc X, we collect all outgoi
 python src/generate_training_data/generate_sentence_retrieval_part_2_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_2_training_set.tsv --path_wiki_titles fever_data/wiki_pages
 
 # generate dev set sentences
-python src/domlin/sentence_retrieval_part_2.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_dev_set.tsv --path_wiki_titles fever_data/wiki_pages
+python src/domlin/sentence_retrieval_part_2.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_2_dev_set.tsv --path_wiki_titles fever_data/wiki_pages/ --file_with_sentences_to_be_predicted fever_data/sentence_retrieval_1_dev_set.tsv --predicted_evidence TODO
+
 
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
 python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true \
@@ -124,7 +125,8 @@ python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --
  --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128\
  --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 \
 --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=4 \
---file_test_results=fever_data/sentence_retrieval_1_dev_set.tsv --prediction_file=fever_data/dev_set_sentences_predicted_part_1.tsv
+--file_test_results=fever_data/dev_set_sentences_predicted_part_1.tsv --prediction_file=fever_data/sentence_retrieval_1_dev_set.tsv
+
 ```
 
 
