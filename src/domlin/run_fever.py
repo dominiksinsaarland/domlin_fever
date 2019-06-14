@@ -203,7 +203,7 @@ class DataProcessor(object):
       return lines
 
 
-class EvidChains(DataProcessor):
+class CombinedEvidence(DataProcessor):
   def __init__(self):
     self.language = "en"
 
@@ -270,7 +270,7 @@ class EvidChains(DataProcessor):
     if FLAGS.prediction_file is not None:
       lines = self._read_tsv(FLAGS.prediction_file)
     else:
-      lines = self._read_tsv(os.path.join(data_dir, "evid_chains_dev_athene.tsv"))
+      lines = self._read_tsv(os.path.join(data_dir, "combined_evidence_dev_athene.tsv"))
 
     examples = []
     for (i, line) in enumerate(lines):
@@ -1153,7 +1153,7 @@ def main(_):
   processors = {
       "fever": FEVERProcessor,
       "ir": DocumentRetrieval,
-      "evid_chains": EvidChains,
+      "combined_evidence": CombinedEvidence,
       "rte": RTEProcessor,
   }
 

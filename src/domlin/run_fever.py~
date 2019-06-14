@@ -1315,7 +1315,7 @@ def main(_):
     if FLAGS.file_test_results is None:
       output_predict_file = os.path.join(FLAGS.output_dir, "test_results.tsv")
     else:
-      output_predict_file = os.path.join(FLAGS.output_dir, FLAGS.file_test_results)
+      output_predict_file = FLAGS.file_test_results
     with tf.gfile.GFile(output_predict_file, "w") as writer:
       tf.logging.info("***** Predict results *****")
       for prediction in result:
