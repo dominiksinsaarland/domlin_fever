@@ -203,7 +203,7 @@ class DataProcessor(object):
       return lines
 
 
-class EvidChains(DataProcessor):
+class CombinedEvidence(DataProcessor):
   def __init__(self):
     self.language = "en"
 
@@ -227,8 +227,7 @@ class EvidChains(DataProcessor):
 
   def get_train_examples(self, data_dir):
     """See base class."""
-    #lines = self._read_tsv(os.path.join(data_dir, "sentences_IR_train_v2.tsv"))
-    lines = self._read_tsv(os.path.join(data_dir, "IR_training_set_evidence_chains_v5.tsv"))
+    lines = self._read_tsv(FLAGS.path_to_train_file)
     examples = []
     for (i, line) in enumerate(lines):
       guid = "train-%d" % (i)
@@ -261,8 +260,6 @@ class EvidChains(DataProcessor):
 
 
   def get_dev_examples(self, data_dir):
-    #lines = self._read_tsv(os.path.join(data_dir, "evidence_chains_dev_set_v2.tsv"))
-    #lines = self._read_tsv(os.path.join(data_dir, "NEI_evidence_chains.tsv"))
 
 
 
@@ -270,7 +267,7 @@ class EvidChains(DataProcessor):
     if FLAGS.prediction_file is not None:
       lines = self._read_tsv(FLAGS.prediction_file)
     else:
-      lines = self._read_tsv(os.path.join(data_dir, "evid_chains_dev_athene.tsv"))
+      lines = self._read_tsv(os.path.join(data_dir, "combined_evidence_dev_set.tsv"))
 
     examples = []
     for (i, line) in enumerate(lines):
@@ -383,12 +380,6 @@ class DocumentRetrieval(DataProcessor):
       lines = self._read_tsv(FLAGS.prediction_file)
     else:
       lines = self._read_tsv(os.path.join(data_dir, "all_sentences_dev_set.tsv"))
-    #lines = self._read_tsv(os.path.join(data_dir, "all_NEI_sents_train.tsv")) 
-
-    #lines = self._read_tsv(os.path.join(data_dir, "second_pass_sentences_dev_set_v2.tsv"))
-    #lines = self._read_tsv(os.path.join(data_dir, "sentences_IR_dev_v2.tsv"))
-    #lines = self._read_tsv(os.path.join(data_dir, "sentences_IR_dev.tsv")) 
-    #lines = self._read_tsv(os.path.join(data_dir, "second_pass_sentences_NEI.tsv")) 
 
 
     examples = []
@@ -1153,7 +1144,7 @@ def main(_):
   processors = {
       "fever": FEVERProcessor,
       "ir": DocumentRetrieval,
-      "evid_chains": EvidChains,
+      "combined_evidence": CombinedEvidence,
       "rte": RTEProcessor,
   }
 
