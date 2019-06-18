@@ -35,6 +35,9 @@ def sentence_retrieval(path_to_infile, path_to_outfile, path_to_wiki):
 	docs = set()
 	with open(path_to_infile) as infile:
 		for line in infile:
+			if args.NEI_evidence.lower() == "true":
+				if claim["verifiable"] == "verifiable":
+					continue
 			data = json.loads(line)
 			claim = data["claim"]
 			pred_pages = data["predicted_pages"]
@@ -45,6 +48,9 @@ def sentence_retrieval(path_to_infile, path_to_outfile, path_to_wiki):
 	with open(path_to_infile) as infile:
 		for line in infile:
 			data = json.loads(line)
+			if args.NEI_evidence.lower() == "true":
+				if claim["verifiable"] == "verifiable":
+					continue
 			claim = data["claim"]
 			pred_pages = data["predicted_pages"]
 
@@ -64,6 +70,7 @@ if __name__ == '__main__':
 	parser.add_argument('--infile')
 	parser.add_argument('--outfile')
 	parser.add_argument('--path_wiki_titles')
+	parser.add_argument('--NEI_evidence', default="False")
 	args = parser.parse_args()
-	generate_sentence_retrieval_training_set(args.infile, args.outfile, args.path_wiki_titles)
+	sentence_retrieval(args.infile, args.outfile, args.path_wiki_titles)
 

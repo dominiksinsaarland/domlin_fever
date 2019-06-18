@@ -128,7 +128,28 @@ python src/domlin/run_fever.py --task_name=combined_evidence --do_train=true --d
 --file_test_results=fever_data/dev_set_sentences_predicted_part_2.tsv --prediction_file=fever_data/sentence_retrieval_2_dev_set.tsv
 ```
 
+* RTE (recognize textual entailment) module
 
+We found in preliminary experiments that BERT performs very well on the RTE part of the FEVER dataset and if we take only gold evidence (for the "SUPPORT/REFUTES" and ignoring the "NOT ENOUGH INFORMATION") classes, we get 90%+ accuracy. Therefore, we use our sentence retrieval modules to find evidence for the NEI class, concatenate all the evidence and then fine-tune another BERT checkpoint for the RTE module - this is very similar to the FEVER baseline in (Thorne et al., 2018).
+
+First, we need to find evidence sentences for the NEI class:
+
+```bash 
+
+
+# generate NEI evidence
+
+python src/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/NEI_evidence_1.tsv --path_wiki_titles fever_data/wiki_pages NEI_evidence True
+
+
+# train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
+python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true \
+--path_to_train_file=fever_data/sentence_retrieval_1_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt\
+ --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128\
+ --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 \
+--init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=4 \
+--file_test_results=fever_data/sentence_retrieval_1_dev_set.tsv --prediction_file=fever_data/dev_set_sentences_predicted_part_1.tsv
+```
 
 
 
