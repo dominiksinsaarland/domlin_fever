@@ -37,7 +37,7 @@ def sentence_retrieval(path_to_infile, path_to_outfile, path_to_wiki):
 		for line in infile:
 			data = json.loads(line)
 			if args.NEI_evidence.lower() == "true":
-				if data["verifiable"] == "verifiable":
+				if data["verifiable"] == "VERIFIABLE":
 					continue
 
 			claim = data["claim"]
@@ -50,7 +50,7 @@ def sentence_retrieval(path_to_infile, path_to_outfile, path_to_wiki):
 		for line in infile:
 			data = json.loads(line)
 			if args.NEI_evidence.lower() == "true":
-				if data["verifiable"] == "verifiable":
+				if data["verifiable"] == "VERIFIABLE":
 					continue
 			claim = data["claim"]
 			pred_pages = data["predicted_pages"]
