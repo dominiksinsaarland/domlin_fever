@@ -139,7 +139,7 @@ First, we need to find evidence sentences for the NEI class:
 
 # generate NEI evidence
 
-python src/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/NEI_evidence_1.tsv --path_wiki_titles fever_data/wiki_pages NEI_evidence True
+python src/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/NEI_evidence_1.tsv --path_wiki_titles fever_data/wiki_pages --NEI_evidence True
 
 
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
