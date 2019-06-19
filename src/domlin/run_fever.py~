@@ -559,7 +559,7 @@ class FEVERProcessor(DataProcessor):
 
 
     if FLAGS.train_file is None:
-      lines = self._read_tsv(os.path.join(data_dir, "RTE_train_set_with_additional_evidence.tsv"))
+      lines = self._read_tsv(os.path.join(data_dir, "RTE_train_set.tsv"))
     else:
       lines = self._read_tsv(FLAGS.train_file)
 

@@ -624,7 +624,7 @@ class FEVERProcessor(DataProcessor):
     """See base class."""
 
     if FLAGS.prediction_file is not None:
-      lines = self._read_tsv(os.path.join(data_dir, FLAGS.prediction_file))
+      lines = self._read_tsv(FLAGS.prediction_file)
     else:
       #lines = self._read_tsv("/raid/dost01/fever_2.0/RTE_good_bad_dev.tsv")
       lines = self._read_tsv(os.path.join(data_dir, "RTE_dev_with_retrieved_evidence.tsv"))
