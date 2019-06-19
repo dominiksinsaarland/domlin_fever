@@ -381,7 +381,6 @@ class DocumentRetrieval(DataProcessor):
     else:
       lines = self._read_tsv(os.path.join(data_dir, "all_sentences_dev_set.tsv"))
 
-
     examples = []
     for (i, line) in enumerate(lines):
       guid = "dev-%d" % (i)
@@ -562,7 +561,7 @@ class FEVERProcessor(DataProcessor):
     if FLAGS.train_file is None:
       lines = self._read_tsv(os.path.join(data_dir, "RTE_train_set_with_additional_evidence.tsv"))
     else:
-      lines = self._read_tsv(os.path.join(data_dir, FLAGS.train_file))
+      lines = self._read_tsv(FLAGS.train_file)
 
 
     #examples = []
