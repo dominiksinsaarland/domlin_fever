@@ -59,8 +59,10 @@ def generate_RTE_file(path_to_file, path_to_outfile, path_to_evid, path_to_pred_
 				data = json.loads(line)
 				claim_id = str(data["id"])
 				claim = data["claim"]
-				#label = data["label"]
-				label = "NOT ENOUGH INFO"
+				if "label" in data:
+					label = data["label"]
+				else:
+					label = "NOT ENOUGH INFO"
 				#evid = data["evidence"]
 				predicted_pages = data["predicted_pages"]
 

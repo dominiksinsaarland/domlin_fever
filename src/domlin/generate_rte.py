@@ -101,5 +101,4 @@ if __name__ == '__main__':
 	parser.add_argument("--path_evid_2")
 	parser.add_argument("--path_evid_2_predicted")
 	args = parser.parse_args()
-	generate_sentence_retrieval_training_set(args.infile, args.outfile, args.path_wiki_titles)
 	generate_RTE_file(args.infile, args.outfile, args.path_evid_1, args.path_evid_1_predicted, args.path_evid_2, args.path_evid_2_predicted, args.path_wiki_titles)
