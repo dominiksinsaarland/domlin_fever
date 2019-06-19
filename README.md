@@ -163,9 +163,6 @@ CUDA_VISIBLE_DEVICES=6 python src/domlin/run_fever.py --task_name=fever --do_tra
 --prediction_file=RTE_dev_set_new_try_v4.tsv --train_file=fever_data/RTE_train_set.tsv
 
 
-# generate the dev set
-
-# predict dev set
 ```
 
 * run all at once on testset
