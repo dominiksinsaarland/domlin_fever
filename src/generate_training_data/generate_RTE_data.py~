@@ -115,7 +115,7 @@ def generate_RTE_train_set(path_infile, path_NEI_evidence, path_NEI_predictions,
 		docs.update([x[0] for x in evid])
 
 	docs = load_wiki_pages(path_to_wiki, docs)
-	with open("generated_files/RTE_train_set_with_additional_evidence_v4.tsv", "w") as outfile:
+	with open(path_outfile, "w") as outfile:
 		for claim_id, evid in RTE_evidence.items():
 			if claim_id not in claim_labels:
 				continue

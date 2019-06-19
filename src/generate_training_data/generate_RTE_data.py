@@ -62,7 +62,7 @@ def load_wiki_docs(path_to_infile, path_wiki_titles, return_all_titles=False):
 		return docs
 
 
-def generate_RTE_train_set(path_infile, path_NEI_evidence, path_NEI_predictions, path_outfile path_to_wiki):
+def generate_RTE_train_set(path_infile, path_NEI_evidence, path_NEI_predictions, path_outfile, path_to_wiki):
 	claim_labels = {}
 	RTE_evidence = defaultdict(list)
 	claim_set = set()
