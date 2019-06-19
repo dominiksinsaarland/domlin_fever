@@ -139,7 +139,7 @@ First, we need to find evidence sentences for the NEI class:
 python src/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/NEI_evidence_1.tsv --path_wiki_titles fever_data/wiki_pages --NEI_evidence True
 
 # predict NEI evidence
-CUDA_VISIBLE_DEVICES=0 python src/domlin/run_fever.py --task_name=ir --do_train=false --do_eval=false --do_predict=true \
+python src/domlin/run_fever.py --task_name=ir --do_train=false --do_eval=false --do_predict=true \
  --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
  --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128 \
  --do_lower_case=False --use_hingeloss=yes --file_test_results=fever_data/NEI_evidence_predicted.tsv --prediction_file=fever_data/NEI_evidence_1.tsv
@@ -156,13 +156,11 @@ fever_data/dev_set_sentences_predicted_part_1.tsv --path_evid_2 fever_data/sente
 
 # actually train the model
 
-CUDA_VISIBLE_DEVICES=6 python src/domlin/run_fever.py --task_name=fever --do_train=true --do_eval=true --do_predict=false \
+python src/domlin/run_fever.py --task_name=fever --do_train=true --do_eval=true --do_predict=false \
 --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
 --max_seq_length=370 --do_lower_case=false --learning_rate=3e-5 --train_batch_size=12 \
 --num_train_epochs=2 --output_dir=fever_models/rte_model --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt \
---prediction_file=RTE_dev_set_new_try_v4.tsv --train_file=fever_data/RTE_train_set.tsv
-
-
+--prediction_file=RTE_dev_set.tsv --train_file=fever_data/RTE_train_set.tsv
 ```
 
 This yields the final model used in my hand-in
@@ -185,8 +183,8 @@ if all the models are included, one can simply run the script predict.sh to labe
 
 ```bash 
 # predict new file
-$file_name="test.jsonl"
-$outfile_name="test.labelled.jsonl"
+$file_name="fever_data/test.jsonl"
+$outfile_name="fever_data/test_predictions.jsonl"
 predict.sh $file_name $outfile_name
 ```
 
