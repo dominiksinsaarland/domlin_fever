@@ -185,7 +185,7 @@ if all the models are included, one can simply run the script predict.sh to labe
 # predict new file
 file_name="fever_data/test.jsonl"
 outfile_name="fever_data/test_predictions.jsonl"
-predict.sh $file_name $outfile_name
+bash predict.sh $file_name $outfile_name
 ```
 
 
