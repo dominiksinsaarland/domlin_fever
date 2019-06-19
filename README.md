@@ -165,7 +165,33 @@ CUDA_VISIBLE_DEVICES=6 python src/domlin/run_fever.py --task_name=fever --do_tra
 
 ```
 
+This yields the final model used in my hand-in
+
 * run all at once on testset
+
+either get the pre-trained models 
+
+```bash 
+# download models
+# include links
+
+# move models to the right place
+
+```
+or train the models with the steps above.
+
+if all the models are included, one can simply run the script predict.sh to label a file (each line should have a claim and an ID as required by the fever server)
+
+
+```bash 
+# predict new file
+$file_name="test.jsonl"
+$outfile_name="test.labelled.jsonl"
+predict.sh $file_name $outfile_name
+```
+
+
+
 
 
 
