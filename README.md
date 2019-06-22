@@ -193,3 +193,9 @@ file_name="fever_data/test.jsonl"
 outfile_name="fever_data/test_predictions.jsonl"
 bash predict.sh $file_name $outfile_name
 ```
+
+* questions
+
+If anything should not work or is unclear, please don't hesitate to contact the authors
+
+Dominik Stammbach (dominik.stammbach@bluewin.ch)
