@@ -185,8 +185,10 @@ unzip sentence_retrieval_part_2.zip fever_models/sentence_retrieval_part_2
 ```
 or train the models with the steps above.
 
-if all the models are included, one can simply run the script predict.sh to label a file (each line should have a claim and an ID as required by the fever server)
 
+### predict new claims
+
+To predict new claims, run the following script. The script expects claims to be in the same format as the testset ("test.jsonl") of the FEVER shared task
 
 ```bash 
 # predict new file
