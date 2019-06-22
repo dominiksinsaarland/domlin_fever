@@ -1,8 +1,7 @@
-# domlin_fever
+### domlin_fever
 
 Our hand in for the FEVER 2.0 shared task
 
-# requirements
 
 
 ### Requirements
@@ -12,13 +11,13 @@ Our hand in for the FEVER 2.0 shared task
 * BERT
 
 
-# installation
+### installation
 
 * Download and install Anaconda (https://www.anaconda.com/)
 * Create a Python Environment and activate it:
 ```bash 
-    conda create -n domlin_fever python=3.6
-    source activate domlin_fever
+conda create -n domlin_fever python=3.6
+source activate domlin_fever
 ```
 
 * download BERT cased English model
@@ -35,7 +34,7 @@ pip install requirments.txt
 
 * Download NLTK Punkt Tokenizer
 ```bash
-    python -c "import nltk; nltk.download('punkt')"
+python -c "import nltk; nltk.download('punkt')"
 ```
 
 
@@ -49,6 +48,10 @@ wget -O fever_data/train.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/t
 wget -O fever_data/dev.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/shared_task_dev.jsonl
 wget -O fever_data/test.jsonl https://s3-eu-west-1.amazonaws.com/fever.public/shared_task_test.jsonl 
 ```
+
+### train your own models
+
+Either train your own modules or just download pre-trained modules 
 
 
 * document retrieval module
@@ -85,8 +88,8 @@ python src/domlin/sentence_retrieval_part_1.py --infile fever_data/dev.documents
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
 python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true \
 --path_to_train_file=fever_data/sentence_retrieval_1_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt\
- --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128\
- --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 \
+--bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128\
+--do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 \
 --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=4 \
 --file_test_results=fever_data/dev_set_sentences_predicted_part_1.tsv --prediction_file=fever_data/sentence_retrieval_1_dev_set.tsv
 ```
@@ -122,8 +125,8 @@ python src/domlin/sentence_retrieval_part_2.py --infile fever_data/train.documen
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
 python src/domlin/run_fever.py --task_name=combined_evidence --do_train=true --do_eval=false --do_predict=true \
 --path_to_train_file=fever_data/sentence_retrieval_2_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt\
- --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_2 --max_seq_length=256\
- --do_lower_case=False --learning_rate=2e-5 --train_batch_size=16 --num_train_epochs=2 \
+--bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_2 --max_seq_length=256\
+--do_lower_case=False --learning_rate=2e-5 --train_batch_size=16 --num_train_epochs=2 \
 --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt --use_hingeloss=yes --negative_samples=2 \
 --file_test_results=fever_data/dev_set_sentences_predicted_part_2.tsv --prediction_file=fever_data/sentence_retrieval_2_dev_set.tsv
 ```
@@ -140,9 +143,9 @@ python src/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documen
 
 # predict NEI evidence
 python src/domlin/run_fever.py --task_name=ir --do_train=false --do_eval=false --do_predict=true \
- --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
- --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128 \
- --do_lower_case=False --use_hingeloss=yes --file_test_results=fever_data/NEI_evidence_predicted.tsv --prediction_file=fever_data/NEI_evidence_1.tsv
+--vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
+--output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128 \
+--do_lower_case=False --use_hingeloss=yes --file_test_results=fever_data/NEI_evidence_predicted.tsv --prediction_file=fever_data/NEI_evidence_1.tsv
 
 # generate the RTE training set
 python src/generate_training_data/generate_RTE_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/RTE_train_set.tsv --path_wiki_titles fever_data/wiki_pages/ --NEI_evidence fever_data/NEI_evidence_1.tsv --NEI_predictions fever_data/NEI_evidence_predicted.tsv 
@@ -163,12 +166,10 @@ python src/domlin/run_fever.py --task_name=fever --do_train=true --do_eval=true 
 --prediction_file=RTE_dev_set.tsv --train_file=fever_data/RTE_train_set.tsv
 ```
 
-This yields the final model used in my hand-in
 
-* run all at once on testset
+### Download pre-trained models
 
-either get the pre-trained models 
-
+Get the pre-trained models
 ```bash 
 # download models
 
@@ -194,8 +195,8 @@ outfile_name="fever_data/test_predictions.jsonl"
 bash predict.sh $file_name $outfile_name
 ```
 
-* questions
+### questions
 
 If anything should not work or is unclear, please don't hesitate to contact the authors
 
-Dominik Stammbach (dominik.stammbach@bluewin.ch)
+* Dominik Stammbach (dominik.stammbach@bluewin.ch)
