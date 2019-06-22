@@ -85,8 +85,8 @@ if __name__ == '__main__':
 	parser.add_argument("--path_rte_predictions")
 	args = parser.parse_args()
 
-python src/domlin/generate_submission.py fever/rte.$(basename $1) rte_models/rte.$(basename $1) fever/ir.$(basename $1) $2 fever/sentences_1.$(basename $1) sentence_retrieval_1/sentences_1.$(basename $1) fever/sentences_2.$(basename $1) sentence_retrieval_2/sentences_2.$(basename $1)
+#python src/domlin/generate_submission.py fever/rte.$(basename $1) rte_models/rte.$(basename $1) fever/ir.$(basename $1) $2 fever/sentences_1.$(basename $1) sentence_retrieval_1/sentences_1.$(basename $1) fever/sentences_2.$(basename $1) sentence_retrieval_2/sentences_2.$(basename $1)
 
-	# def generate_test_submission(path_to_rte_file, path_to_labels, path_to_file, path_to_outfile, path_to_evid, path_to_pred_evid, path_to_evid_2, path_to_pred_evid_2):
-	generate_test_submission(args.path_rte_file, args.path_rte_predictions, args.infile, args.outfile, args.path_evid_1, args.path_evid_1_predicted, args.path_evid_2, args.path_evid_2_predicted)
+# def generate_test_submission(path_to_rte_file, path_to_labels, path_to_file, path_to_outfile, path_to_evid, path_to_pred_evid, path_to_evid_2, path_to_pred_evid_2):
+generate_test_submission(args.path_rte_file, args.path_rte_predictions, args.infile, args.outfile, args.path_evid_1, args.path_evid_1_predicted, args.path_evid_2, args.path_evid_2_predicted)
 

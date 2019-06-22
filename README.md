@@ -149,7 +149,7 @@ python src/generate_training_data/generate_RTE_data.py --infile fever_data/train
 
 # generate the RTE dev set
 
-python src/domlin/generate_rte.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/RTE_dev_set.py \
+python src/domlin/generate_rte.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/RTE_dev_set.tsv \
 --path_evid_1 fever_data/sentence_retrieval_1_dev_set.tsv --path_evid_1_predicted \
 fever_data/dev_set_sentences_predicted_part_1.tsv --path_evid_2 fever_data/sentence_retrieval_2_dev_set.tsv \
 --path_evid_2_predicted fever_data/dev_set_sentences_predicted_part_2.tsv --path_wiki_titles fever_data/wiki_pages
@@ -171,10 +171,16 @@ either get the pre-trained models
 
 ```bash 
 # download models
-# include links
+
+wget https://cloud.dfki.de/owncloud/index.php/s/axfP7BBkq5TSsr8/download -O rte_model.zip
+wget https://cloud.dfki.de/owncloud/index.php/s/iiKZPYeGzmxwjqg/download -O sentence_retrieval_part_1.zip
+wget https://cloud.dfki.de/owncloud/index.php/s/8rwDE6QStTB6zQB/download -O sentence_retrieval_part_2.zip
 
 # move models to the right place
 
+unzip rte_model.zip fever_models/rte_model
+unzip sentence_retrieval_part_1.zip fever_models/sentence_retrieval_part_1
+unzip sentence_retrieval_part_2.zip fever_models/sentence_retrieval_part_2
 ```
 or train the models with the steps above.
 
@@ -187,9 +193,3 @@ file_name="fever_data/test.jsonl"
 outfile_name="fever_data/test_predictions.jsonl"
 bash predict.sh $file_name $outfile_name
 ```
-
-
-
-
-
-
