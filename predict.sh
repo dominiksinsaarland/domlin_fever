@@ -39,13 +39,13 @@ python src/domlin/generate_rte.py --infile tmp/ir.$(basename $1) --outfile tmp/r
 --path_evid_2 tmp/sentences_2.$(basename $1) --path_evid_2_predicted tmp/sentences_2_predicted.$(basename $1) --path_wiki_titles $path_wiki_title
 
 
-python src/domlin/run_fever.py --task_name=fever --do_train=false --do_eval=true --do_predict=false \
+python src/domlin/run_fever.py --task_name=fever --do_train=false --do_eval=false --do_predict=true \
 --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
 --max_seq_length=370 --do_lower_case=false --output_dir=fever_models/rte_model --prediction_file=tmp/rte.$(basename $1) --file_test_results=tmp/rte_predicted.$(basename $1)
 
 
 echo "generating submission"
 
-python src/domlin/generate_submission.py --path_rte_file tmp/rte.$(basename $1) path_rte_predictions tmp/rte_predicted.$(basename $1) \
+python src/domlin/generate_submission.py --path_rte_file tmp/rte.$(basename $1) --path_rte_predictions tmp/rte_predicted.$(basename $1) --infile=tmp/ir.$(basename $1) \
 --outfile $2 --path_evid_1 tmp/sentences_1.$(basename $1) --path_evid_1_predicted tmp/sentences_1_predicted.$(basename $1) \
 --path_evid_2 tmp/sentences_2.$(basename $1) --path_evid_2_predicted tmp/sentences_2_predicted.$(basename $1)
