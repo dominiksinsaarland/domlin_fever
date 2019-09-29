@@ -1,6 +1,6 @@
-### domlin_fever
+### Team DOMLIN: Exploititing Evidence Enhancement for the FEVER Shared Task
 
-Our hand in for the FEVER 2.0 shared task
+Our hand in for the FEVER 2.0 shared task (domlin_fever)
 
 
 
