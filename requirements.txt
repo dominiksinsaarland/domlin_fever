@@ -2,5 +2,5 @@ wikipedia
 nltk
 tqdm
 allennlp
-tensorflow-gpu==1.11.0
+tensorflow-gpu==1.15.4
 fever-api
