@@ -25,11 +25,11 @@ We just use existing document retrieval systems in this work, these are
 * [Team Athene](https://github.com/UKPLab/fever-2018-team-athene)
 * [FEVER baseline system](https://github.com/sheffieldnlp/naacl2018-fever)
 
-First, run the document retrieval steps for these 2 systems
+First, we have to run the document retrieval steps for these 2 systems
 
 ### Models
 
-Fine-tuned RoBERTa checkpoints can be downloaded [here](..)
+Fine-tuned RoBERTa checkpoints can be downloaded [here](https://www.dropbox.com/s/8lq7j2vco2ltran/models.zip?dl=0)
 
 ### Prepare Evidence Retrieval
 
