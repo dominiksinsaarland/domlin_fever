@@ -9,7 +9,11 @@ Code for our hand in for the FEVER 2.0 shared task
 
 ### Update
 
-We released code and models for our updated system described [here][(https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/453826/e-Fever.pdf?sequence=1&isAllowed=y)
+We released code and models for our updated system described [here.](https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/453826/e-Fever.pdf?sequence=1&isAllowed=y)
+
+
+### Requirements
+* Python 3.6
 
 
 ### Legacy Team DOMLIN: Exploititing Evidence Enhancement for the FEVER Shared Task)
