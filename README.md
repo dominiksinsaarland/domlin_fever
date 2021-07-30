@@ -78,9 +78,9 @@ First, run document retrieval on train, dev and test. Careful, this takes a whil
 
 
 ```bash 
-PYTHONPATH=src python src/scripts/athene/doc_retrieval_athene.py --database none --infile fever_data/train.jsonl --outfile fever_data/train.documents_retrieved.jsonl --path_wiki_titles fever_data/wiki_pages
-PYTHONPATH=src python src/scripts/athene/doc_retrieval_athene.py --database none --infile fever_data/dev.jsonl --outfile fever_data/dev.documents_retrieved.jsonl --path_wiki_titles fever_data/wiki_pages
-PYTHONPATH=src python src/scripts/athene/doc_retrieval_athene.py --database none --infile fever_data/test.jsonl --outfile fever_data/test.documents_retrieved.jsonl --path_wiki_titles fever_data/wiki_pages
+PYTHONPATH=src_legacy python src_legacy/scripts/athene/doc_retrieval_athene.py --database none --infile fever_data/train.jsonl --outfile fever_data/train.documents_retrieved.jsonl --path_wiki_titles fever_data/wiki_pages
+PYTHONPATH=src_legacy python src_legacy/scripts/athene/doc_retrieval_athene.py --database none --infile fever_data/dev.jsonl --outfile fever_data/dev.documents_retrieved.jsonl --path_wiki_titles fever_data/wiki_pages
+PYTHONPATH=src_legacy python src_legacy/scripts/athene/doc_retrieval_athene.py --database none --infile fever_data/test.jsonl --outfile fever_data/test.documents_retrieved.jsonl --path_wiki_titles fever_data/wiki_pages
 ```
 
 * first sentence retrieval module
@@ -93,14 +93,14 @@ to train the model:
 
 
 # generate the training set
-python src/generate_training_data/generate_sentence_retrieval_part_1_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_training_set.tsv --path_wiki_titles fever_data/wiki_pages
+python src_legacy/generate_training_data/generate_sentence_retrieval_part_1_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_training_set.tsv --path_wiki_titles fever_data/wiki_pages
 
 # generate dev set sentences
-python src/domlin/sentence_retrieval_part_1.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_dev_set.tsv --path_wiki_titles fever_data/wiki_pages
+python src_legacy/domlin/sentence_retrieval_part_1.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_1_dev_set.tsv --path_wiki_titles fever_data/wiki_pages
 
 
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
-python src/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true \
+python src_legacy/domlin/run_fever.py --task_name=ir --do_train=true --do_eval=false --do_predict=true \
 --path_to_train_file=fever_data/sentence_retrieval_1_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt\
 --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128\
 --do_lower_case=False --learning_rate=2e-5 --train_batch_size=32 --num_train_epochs=2 \
@@ -130,14 +130,14 @@ If we retrieve a positive sentence evid_1 in a wiki doc X, we collect all outgoi
 
 ```bash 
 # generate the training set
-python src/generate_training_data/generate_sentence_retrieval_part_2_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_2_training_set.tsv --path_wiki_titles fever_data/wiki_pages
+python src_legacy/generate_training_data/generate_sentence_retrieval_part_2_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_2_training_set.tsv --path_wiki_titles fever_data/wiki_pages
 
 # generate dev set sentences
-python src/domlin/sentence_retrieval_part_2.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_2_dev_set.tsv --path_wiki_titles fever_data/wiki_pages/ --file_with_sentences_to_be_predicted fever_data/sentence_retrieval_1_dev_set.tsv --predicted_evidence fever_data/dev_set_sentences_predicted_part_1.tsv
+python src_legacy/domlin/sentence_retrieval_part_2.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/sentence_retrieval_2_dev_set.tsv --path_wiki_titles fever_data/wiki_pages/ --file_with_sentences_to_be_predicted fever_data/sentence_retrieval_1_dev_set.tsv --predicted_evidence fever_data/dev_set_sentences_predicted_part_1.tsv
 
 
 # train the model (maybe set CUDA_VISIBLE_DEVICES and nohup, takes a while)
-python src/domlin/run_fever.py --task_name=combined_evidence --do_train=true --do_eval=false --do_predict=true \
+python src_legacy/domlin/run_fever.py --task_name=combined_evidence --do_train=true --do_eval=false --do_predict=true \
 --path_to_train_file=fever_data/sentence_retrieval_2_training_set.tsv --vocab_file=cased_L-12_H-768_A-12/vocab.txt\
 --bert_config_file=cased_L-12_H-768_A-12/bert_config.json --output_dir=fever_models/sentence_retrieval_part_2 --max_seq_length=256\
 --do_lower_case=False --learning_rate=2e-5 --train_batch_size=16 --num_train_epochs=2 \
@@ -153,27 +153,27 @@ First, we need to find evidence sentences for the NEI class:
 
 ```bash 
 # generate NEI evidence
-python src/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/NEI_evidence_1.tsv --path_wiki_titles fever_data/wiki_pages --NEI_evidence True
+python src_legacy/domlin/sentence_retrieval_part_1.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/NEI_evidence_1.tsv --path_wiki_titles fever_data/wiki_pages --NEI_evidence True
 
 # predict NEI evidence
-python src/domlin/run_fever.py --task_name=ir --do_train=false --do_eval=false --do_predict=true \
+python src_legacy/domlin/run_fever.py --task_name=ir --do_train=false --do_eval=false --do_predict=true \
 --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
 --output_dir=fever_models/sentence_retrieval_part_1 --max_seq_length=128 \
 --do_lower_case=False --use_hingeloss=yes --file_test_results=fever_data/NEI_evidence_predicted.tsv --prediction_file=fever_data/NEI_evidence_1.tsv
 
 # generate the RTE training set
-python src/generate_training_data/generate_RTE_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/RTE_train_set.tsv --path_wiki_titles fever_data/wiki_pages/ --NEI_evidence fever_data/NEI_evidence_1.tsv --NEI_predictions fever_data/NEI_evidence_predicted.tsv 
+python src_legacy/generate_training_data/generate_RTE_data.py --infile fever_data/train.documents_retrieved.jsonl --outfile fever_data/RTE_train_set.tsv --path_wiki_titles fever_data/wiki_pages/ --NEI_evidence fever_data/NEI_evidence_1.tsv --NEI_predictions fever_data/NEI_evidence_predicted.tsv 
 
 # generate the RTE dev set
 
-python src/domlin/generate_rte.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/RTE_dev_set.tsv \
+python src_legacy/domlin/generate_rte.py --infile fever_data/dev.documents_retrieved.jsonl --outfile fever_data/RTE_dev_set.tsv \
 --path_evid_1 fever_data/sentence_retrieval_1_dev_set.tsv --path_evid_1_predicted \
 fever_data/dev_set_sentences_predicted_part_1.tsv --path_evid_2 fever_data/sentence_retrieval_2_dev_set.tsv \
 --path_evid_2_predicted fever_data/dev_set_sentences_predicted_part_2.tsv --path_wiki_titles fever_data/wiki_pages
 
 # actually train the model
 
-python src/domlin/run_fever.py --task_name=fever --do_train=true --do_eval=true --do_predict=false \
+python src_legacy/domlin/run_fever.py --task_name=fever --do_train=true --do_eval=true --do_predict=false \
 --vocab_file=cased_L-12_H-768_A-12/vocab.txt --bert_config_file=cased_L-12_H-768_A-12/bert_config.json \
 --max_seq_length=370 --do_lower_case=false --learning_rate=3e-5 --train_batch_size=12 \
 --num_train_epochs=2 --output_dir=fever_models/rte_model --init_checkpoint=cased_L-12_H-768_A-12/bert_model.ckpt \
