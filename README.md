@@ -14,7 +14,98 @@ We released code and models for our updated system described [here.](https://www
 
 ### Requirements
 * Python 3.6
+* Pytorch
+* transformers
+* FEVER baseline system
+* FEVER Team Athene
 
+### Document Retrieval
+
+We just use existing document retrieval systems in this work, these are 
+* [Team Athene](https://github.com/UKPLab/fever-2018-team-athene)
+* (FEVER baseline system)[https://github.com/sheffieldnlp/naacl2018-fever]
+
+First, run the document retrieval steps for these 2 systems
+
+### Models
+
+Fine-tuned RoBERTa checkpoints can be downloaded [here](..)
+
+### Prepare Evidence Retrieval
+
+We use a wrapper class to write a file with (claim/sentence) pairs which is input to our subsequent model. The wrapper class takes as input the filepaths to the document retrieval output by the two systems for each [train/dev/test] split and a path to the wikidb from the FEVER baseline system.
+
+```bash 
+# run with
+db_file=".."
+athene_document_retrieval_train=".."
+athene_document_retrieval_dev".."
+fever_baseline_predicted_sentences_train=".."
+fever_baseline_predicted_sentences_dev=".."
+python src/FEVER_class.py \
+--db_file $db_file \
+--athene_document_retrieval_train $athene_document_retrieval_train \
+--athene_document_retrieval_dev $athene_document_retrieval_dev \
+--fever_baseline_predicted_sentences_train $fever_baseline_predicted_sentences_train \
+--fever_baseline_predicted_sentences_dev $fever_baseline_predicted_sentences_dev 
+
+# stores output files in args.path_outfiles (by default "data")
+```
+
+
+### Run Evidence Retrieval
+
+script takes as input path to model and path to claim/sentence pairs
+
+```bash 
+# run with
+python src/run_fever_sentence_retrieval.py --model_name models/sentence-retrieval-model/ --path_input_file data/all_sentences_dev_set.txt --path_outfile all_sentences_dev_set_predicted.txt
+```
+
+### Run Multihop Evidence Retrieval
+
+first, we need to retrieve the multihop sentences from the hyperlinks, run with
+
+```bash 
+# run with
+python src/generate_multihop_evidence.py \
+--db_file $db_file \
+--athene_document_retrieval_train $athene_document_retrieval_train \
+--athene_document_retrieval_dev $athene_document_retrieval_dev \
+--input_file all_sentences_dev_set_predicted.txt \
+--outfile_name data/all_sentences_dev_set_multihop.txt
+```
+and then, we can use the same script as before to predict these hyperlink sentences
+
+```bash 
+# run with
+python src/run_fever_sentence_retrieval.py --model_name models/sentence-retrieval-model/ --path_input_file data/all_sentences_dev_set_multihop.txt --path_outfile all_sentences_dev_set_multihop_predicted.txt all_sentences_dev_set_predicted_multihop.txt
+```
+
+### Run RTE
+
+lastly, we just concatenate all highest scoring sentences and use our RTE model to predict veracity of the claims
+
+```bash 
+# run with
+python src/run_fever_claim_verification --model_name models/rte-model |
+--sentence_retrieval_predictions all_sentences_dev_set_predicted.txt \
+--sentence_retrieval_predictions_multihop all_sentences_dev_set_predicted_multihop.txt \
+--outfile data/claim_predictions.txt \
+--athene_document_retrieval_dev $athene_document_retrieval_dev
+
+# output gets saved to 
+data/claim_predictions.txt
+```
+### Or Train your own models
+
+This is basic -- just standard pytorch fine-tuning using transformers. The only notable thing is that we use our sentence retrieval model to predict the train set and create the RTE training set (we do not use the annotated evidence there anymore)
+
+* fine-tune sentence retrieval model using FEVER_class.py output
+* predict training set with our models
+* predict multihop evidence on training set
+* create RTE input examples (the same as the steps above)
+* train RTE model given claim and predicted evidence
 
 ### Legacy Team DOMLIN: Exploititing Evidence Enhancement for the FEVER Shared Task)
 
