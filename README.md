@@ -23,7 +23,7 @@ We released code and models for our updated system described [here.](https://www
 
 We just use existing document retrieval systems in this work, these are 
 * [Team Athene](https://github.com/UKPLab/fever-2018-team-athene)
-* (FEVER baseline system)[https://github.com/sheffieldnlp/naacl2018-fever]
+* [FEVER baseline system](https://github.com/sheffieldnlp/naacl2018-fever)
 
 First, run the document retrieval steps for these 2 systems
 
